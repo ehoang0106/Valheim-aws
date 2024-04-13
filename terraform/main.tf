@@ -1,9 +1,9 @@
 resource "aws_instance" "valheim-instance" {
     ami = "ami-09c8d5d747253fb7a"
-    instance_type = "t3.medium"
+    instance_type = "t3.small"
     root_block_device {
         delete_on_termination = true
-        volume_size = 16
+        volume_size = 8
     }
     security_groups = [resource.aws_security_group.valheim-sg.name]
     key_name = "valheim-pk"
