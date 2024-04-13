@@ -1,0 +1,77 @@
+name: 'Terraform'
+
+on:
+  workflow_dispatch:
+    inputs:
+      terraform_job:
+            type: choice
+            description: Terraform
+            options:
+            - plan
+            - apply
+            - destroy
+permissions:
+  contents: read
+  id-token: write   # This is required for requesting the JWT
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: "./terraform/"
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+    
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+          role-to-assume: arn:aws:iam::069363837566:role/vrisng-github-terraform
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ap-southeast-2
+    
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      
+    # Generate tfvars
+    - name: Generate vars.tfvars
+      run: |
+        cat > "./vars.tfvars" <<EOF
+          home_cdir_block = ${{ secrets.HOME_CDIR_BLOCK }}
+          name = "${{ vars.NAME }}"
+          password = "${{ secrets.PASSWORD }}"
+        EOF
+        
+        cat ./vars.tfvars
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+#     - name: Terraform Format
+#       run: terraform fmt -check
+      
+    
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -var-file=vars.tfvars -input=false
+    
+    # Generates an execution plan for Terraform
+    - name: Terraform Apply
+      if: ${{ inputs.terraform_job == 'apply' }} 
+      run: terraform apply -var-file=vars.tfvars -auto-approve -input=false
+      
+    # Generates an execution plan for Terraform
+    - name: Terraform Destroy
+      if: ${{ inputs.terraform_job == 'destroy' }} 
+      run: terraform destroy -var-file=vars.tfvars -auto-approve -input=false
