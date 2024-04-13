@@ -1,11 +1,14 @@
 #!/bin/bash
 sudo apt update
 sudo snap install docker
+sudo addgroup --system docker
+sudo adduser ubuntu docker
+newgrp docker
+sudo snap disable docker
+sudo snap enable docker
 
-sudo service docker start
-sudo usermod -a -G docker unbuntu
-mkdir /home/ubuntu/valheim/saves
-mkdir /home/ubuntu/valheim/server
+kdir -p /home/ubuntu/valheim/saves
+mkdir -p /home/ubuntu/valheim/server
 
 docker run -d --name="valheim" \
 --net='bridge' \
