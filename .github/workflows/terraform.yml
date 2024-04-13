@@ -37,7 +37,7 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-          role-to-assume: arn:aws:iam::069363837566:role/vrisng-github-terraform
+          role-to-assume: arn:aws:iam::069363837566:role/valheim-github-terraform
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ap-southeast-2
     
