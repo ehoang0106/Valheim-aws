@@ -15,25 +15,26 @@ resource "aws_instance" "valheim-instance" {
 
 resource "aws_security_group" "valheim-sg" {
     name = "valheim-sg"
-    ingress {
-        description = "valheim-port-allow-udp"
-        from_port = 2456
-        to_port = 2458
-        protocol = "udp"
-    }
-    ingress {
-        description = "valheim-port-allow-tcp"
-        from_port = 2456
-        to_port = 2458
-        protocol = "tcp"
-    }
-    ingress {
-        description = "ssh-allow"
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-    }
-
+    ingress = [
+       {
+          description = "valheim-port-allow-udp"
+          from_port = 2456
+          to_port = 2458
+          protocol = "udp"
+      },
+      {
+          description = "valheim-port-allow-tcp"
+          from_port = 2456
+          to_port = 2458
+          protocol = "tcp"
+      },
+      {
+          description = "ssh-allow"
+          from_port = 22
+          to_port = 22
+          protocol = "tcp"
+      }
+    ]
     egress {
         description = "outbound-rule"
         from_port = 0
