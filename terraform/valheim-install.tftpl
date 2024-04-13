@@ -15,10 +15,10 @@ docker run -d --name="valheim" \
 -e WORLD="lazyValheim" \
 -e TZ="Australia/Melbourne" \
 -e PASSWORD="${password}" \
--e PUBLIC:1 \
+-e PUBLIC=1 \
 -p 2456:2456/udp \
 -p 2457:2457/udp \
 -p 2458:2458/udp \
 -v ./valheim/saves:/home/steam/.config/unity3d/IronGate/Valheim \
--v ./valheim/server:/home/steam/valheim
+-v ./valheim/server:/home/steam/valheim \
 'mbround18/valheim:latest'
