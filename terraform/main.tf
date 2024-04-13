@@ -23,8 +23,8 @@ resource "aws_security_group" "valheim-sg" {
     }
     ingress {
         description = "valheim-port-allow-tcp"
-        from_port = 2457
-        to_port = 2457
+        from_port = 2456
+        to_port = 2458
         protocol = "tcp"
     }
     ingress {
