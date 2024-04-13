@@ -21,18 +21,21 @@ resource "aws_security_group" "valheim-sg" {
           from_port = 2456
           to_port = 2458
           protocol = "udp"
+          cidr_blocks = ["0.0.0.0/0"]
       },
       {
           description = "valheim-port-allow-tcp"
           from_port = 2456
           to_port = 2458
           protocol = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
       },
       {
           description = "ssh-allow"
           from_port = 22
           to_port = 22
           protocol = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
       }
     ]
     egress {
