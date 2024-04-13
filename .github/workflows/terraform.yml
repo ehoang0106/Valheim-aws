@@ -49,7 +49,6 @@ jobs:
     - name: Generate vars.tfvars
       run: |
         cat > "./vars.tfvars" <<EOF
-          home_cdir_block = ${{ secrets.HOME_CDIR_BLOCK }}
           password = "${{ secrets.PASSWORD }}"
         EOF
         
